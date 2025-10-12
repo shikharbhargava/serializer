@@ -20,10 +20,11 @@ add_subdirectory(utils)
 add_subdirectory(ArgParser)
 add_subdirectory(json)
 add_subdirectory(serializer)
+add_subdirectory(shm_queue)
 
 # Main executable
-add_executable(main main/main.cpp)
-target_link_libraries(main serializer ArgParser)
+add_executable(serializer_test main/main.cpp)
+target_link_libraries(serializer_test serializer ArgParser shm_queue)
 
 # Enable testing
 enable_testing()

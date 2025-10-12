@@ -10,6 +10,7 @@
 
 using std::chrono::time_point;
 using std::chrono::high_resolution_clock;
+using Strings = std::vector<std::string>;
 using Table = std::vector<std::pair<std::string, int>>;
 struct Data
 {
@@ -33,6 +34,10 @@ struct Data
         return (m_id == other.m_id) && (m_value == other.m_value) && (m_name == other.m_name) && (m_table == other.m_table);
     }
 };
+using DataMap = std::unordered_map<std::string, Data>;
+
+Strings listOfStr;
+DataMap dataMap;
 
 namespace Serialization
 {
@@ -70,11 +75,6 @@ namespace Serialization
 
 using Serialization::Serializer;
 using Serialization::Deserializer;
-using Strings = std::vector<std::string>;
-using DataMap = std::unordered_map<std::string, Data>;
-
-Strings listOfStr;
-DataMap dataMap;
 
 int main(int argc, const char** argv)
 {
