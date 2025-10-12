@@ -233,7 +233,7 @@ namespace Serialization
     explicit Deserializer(const std::vector<uint8_t> &buf)
         : data(buf.data()), size(buf.size()) {}
 
-    explicit Deserializer(const uint8_t* &buf, size_t length)
+    explicit Deserializer(const uint8_t* buf, size_t length)
         : data(buf), size(length) {}
 
     // POD
@@ -386,4 +386,4 @@ namespace Serialization
 
 #endif // _SERIALIZATION_HPP_
 
-#include "Serialization.tpp"
+#include "Serialization.h"

@@ -6,7 +6,7 @@ target_link_libraries(tests
   gtest
   gtest_main
   json
-  KeyValueParser
+  serializer
   ${OpenCV_LIBS}
 )
 
