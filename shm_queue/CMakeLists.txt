@@ -1,0 +1,3 @@
+add_library(shm_queue INTERFACE)
+
+target_include_directories(shm_queue INTERFACE include)
