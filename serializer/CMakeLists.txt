@@ -1,0 +1,3 @@
+add_library(serializer INTERFACE)
+
+target_include_directories(serializer INTERFACE include)
