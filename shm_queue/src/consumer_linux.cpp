@@ -102,7 +102,7 @@ void readerThread()
 int main(int argc, char *argv[])
 {
     bool useData = false;
-    if (argc > 1 && std::string(argv[1]) == "data")
+    if (argc > 1 && std::string(argv[1]) == "image")
         useData = true;
 
     shm_fd = shm_open(SHM_NAME, O_RDWR, 0666);

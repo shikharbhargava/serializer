@@ -90,7 +90,7 @@ cv::Scalar loopColor(int val)
 int main(int argc, char *argv[])
 {
     bool useData = false;
-    if (argc > 1 && std::string(argv[1]) == "data")
+    if (argc > 1 && std::string(argv[1]) == "image")
         useData = true;
 
     // Shared memory
