@@ -56,6 +56,9 @@ namespace Serialization
   // Helper traits
   // =====================
 
+  class Serializer;
+  class Deserializer;
+
   template <typename T>
   struct always_false : std::false_type {};
 
@@ -96,6 +99,22 @@ namespace Serialization
   struct has_begin_end<T, void_t<
                               decltype(std::declval<T &>().begin()),
                               decltype(std::declval<T &>().end())>> : std::true_type {};
+
+  // custum structure serialization detection
+  template <typename T, typename = void>
+  struct has_serialize : std::false_type {};
+
+  template <typename T>
+  struct has_serialize<T, void_t<
+                               decltype(std::declval<T &>().serialize(std::declval<Serializer *>()))>> : std::true_type {};
+
+  // custom structure deserialization detection
+  template <typename T, typename = void>
+  struct has_deserialize : std::false_type {};
+
+  template <typename T>
+  struct has_deserialize<T, void_t<
+                                 decltype(std::declval<T &>().deserialize(std::declval<Deserializer *>()))>> : std::true_type {};
 
   // =====================
   // Serializer
@@ -162,6 +181,13 @@ namespace Serialization
       }
     }
 
+    // Custom structure serialization
+    template <typename T>
+    void writeCustom(const T &obj)
+    {
+      obj.serialize(this);
+    }
+
     // =====================
     // Write dispatcher (SFINAE)
     // =====================
@@ -204,6 +230,12 @@ namespace Serialization
                                                    has_begin_end<T>::value>::type>
     {
       static void apply(Serializer &s, const T &v) { s.writeSequenceLike(v); }
+    };
+
+    template <typename T>
+    struct write_helper<T, typename std::enable_if<has_serialize<T>::value>::type>
+    {
+      static void apply(Serializer &s, const T &v) { s.writeCustom(v); }
     };
 
   public:
@@ -325,6 +357,15 @@ namespace Serialization
       }
     }
 
+    // Custom structure deserialization
+    template <typename T>
+    void readCustom(T &obj)
+    {
+      obj.deserialize(this);
+    }
+
+    // =====================
+
   private:
     const uint8_t *data;
     size_t pos = 0;
@@ -374,6 +415,12 @@ namespace Serialization
       static void apply(Deserializer &d, T &v) { d.readSequenceLike(v); }
     };
 
+    template <typename T>
+    struct read_helper<T, typename std::enable_if<has_deserialize<T>::value>::type>
+    {
+      static void apply(Deserializer &d, T &v) { d.readCustom(v); }
+    };
+
   public:
     template <typename T>
     void read(T &value)
@@ -386,4 +433,4 @@ namespace Serialization
 
 #endif // _SERIALIZATION_HPP_
 
-#include "Serialization.h"
+#include "Serialization.tpp"
